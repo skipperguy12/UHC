@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>net.njay</groupId>
+    <artifactId>UHC</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>UHC</name>
+    <description>A highly customizable UHC plugin</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>tc.oc</groupId>
+            <artifactId>sportbukkit-api</artifactId>
+            <version>1.7.9-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>tc.oc</groupId>
+            <artifactId>sportbukkit</artifactId>
+            <version>1.7.9-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sk89q</groupId>
+            <artifactId>command-framework-bukkit</artifactId>
+            <version>0.5-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>net.njay</groupId>
+            <artifactId>menu-framework</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jdom</groupId>
+            <artifactId>jdom</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>njay-repo</id>
+            <url>http://repo.njay.net/content/groups/public</url>
+        </repository>
+        <repository>
+            <id>sk89q-repo</id>
+            <url>http://maven.sk89q.com/repo/</url>
+        </repository>
+        <repository>
+            <id>bukkit-repo</id>
+            <url>http://repo.bukkit.org/content/groups/public</url>
+        </repository>
+        <repository>
+            <id>overcast-repo</id>
+            <url>http://repo.oc.tc/content/repositories/snapshots/</url>
+        </repository>
+    </repositories>
+
+    <build>
+        <defaultGoal>clean package</defaultGoal>
+        <resources>
+            <resource>
+                <targetPath>.</targetPath>
+                <directory>${basedir}/src/main/resources/</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>*.yml</include>
+                    <include>*.dat</include>
+                </includes>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <shadedArtifactAttached>false</shadedArtifactAttached>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>org.bukkit:bukkit</exclude>
+                                    <exclude>org.bukkit:craftbukkit</exclude>
+                                </excludes>
+                            </artifactSet>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <version>2.1.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!-- Special Properties -->
+    <properties>
+        <!-- Project properties -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Plugin properties -->
+        <plugin.prefix>UHC</plugin.prefix>
+        <plugin.mainClass>net.njay.uhc.UHC</plugin.mainClass>
+    </properties>
+
+</project>
