@@ -1,5 +1,6 @@
 package net.njay.uhc.menu.join;
 
+import com.google.common.collect.Lists;
 import net.njay.Menu;
 import net.njay.MenuManager;
 import net.njay.annotation.MenuInventory;
@@ -19,6 +20,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class JoinMenu extends Menu implements Listener {
     private MatchManager matchManager;
@@ -27,11 +29,11 @@ public class JoinMenu extends Menu implements Listener {
         super(null, inv);
         this.matchManager = matchManager;
 
-        Bukkit.getPluginManager().registerEvents(this, UHC.getInstance());
+        Bukkit.getScheduler().runTaskTimer(UHC.getInstance(), new Runnable(){ public void run() { populate(); } }, 20, 20*2);
     }
 
-    public void show(Player player) {
-        player.openInventory(getInventory());
+    public void show(final Player player) {
+        Bukkit.getScheduler().runTaskLater(UHC.getInstance(), new Runnable() { public void run(){ player.openInventory(getInventory()); }}, 20);
     }
 
     public void populate() {
@@ -41,8 +43,12 @@ public class JoinMenu extends Menu implements Listener {
             ItemStack wool = new ItemStack(Material.WOOL, 1, getWoolColorFromMatchState(match.getState()));
 
             ItemMeta itemMeta = wool.getItemMeta();
-            itemMeta.setDisplayName(getChatColorFromMatchState(match.getState()) + "Match #" + match.getId());
-            itemMeta.setLore(Arrays.asList(ChatColor.GOLD.toString() + UHC.getPlayerManager().getPlayers(match).size() + "/24"));
+            itemMeta.setDisplayName(getChatColorFromMatchState(match.getState()) + "Match #" + (match.getId()+1));
+            List<String> lore = itemMeta.getLore();
+            if (lore == null) lore = Lists.newArrayList();
+            lore.add(ChatColor.GOLD.toString() + UHC.getPlayerManager().getPlayers(match).size() + "/24");
+            lore.add(match.getStatusMessage());
+            itemMeta.setLore(lore);
             wool.setItemMeta(itemMeta);
 
             getInventory().setItem(i, wool);
@@ -52,12 +58,17 @@ public class JoinMenu extends Menu implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         if (!e.getInventory().getName().equals(getInventory().getName())) return;
-        if (e.getRawSlot() < matchManager.getMatches().size()) {
+        if (e.getRawSlot() < matchManager.getMatches().size() && e.getRawSlot() >= 0) {
             Match toJoin = matchManager.getMatches().get(e.getRawSlot());
-
-            if (toJoin.getState() == MatchState.STARTING)
+            Player player = (Player) e.getWhoClicked();
+            if (toJoin.getState() == MatchState.STARTING){
                 UHC.getPlayerManager().getPlayer((Player) e.getWhoClicked()).setMatch(toJoin);
-            else
+                player.teleport(toJoin.getWorld().getSpawnLocation()); //TODO: Change to lobby spawn
+            }else if (toJoin.getState() == MatchState.IDLE){
+                toJoin.setState(MatchState.STARTING); //TODO: Add a match starting countdown that doesn't start the match until minimum number of players is reached
+                UHC.getPlayerManager().getPlayer(player).setMatch(toJoin);
+                player.teleport(toJoin.getWorld().getSpawnLocation()); //TODO: Change to lobby spawn
+            }else
                 UHC.getPlayerManager().getPlayer((Player) e.getWhoClicked()).getBukkit().sendMessage(ChatColor.RED + "The match state currently does not allow for players to join!");
         }
         e.setCancelled(true);

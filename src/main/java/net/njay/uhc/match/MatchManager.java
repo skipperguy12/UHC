@@ -22,10 +22,9 @@ import java.util.List;
  * Class to manage the multiple match instances
  */
 public class MatchManager {
-    private List<Match> matches = Collections.synchronizedList(new ArrayList<Match>());
-    private JoinMenu menu;
+    private List<Match> matches = Lists.newArrayList();
 
-    private static int id = 0;
+    private static int id = -1;
 
     public MatchManager(int matchCount) {
         if (matchCount <= 0)
@@ -34,12 +33,6 @@ public class MatchManager {
         for (int i = 0; i < matchCount; i++) {
             matches.add(cycle(null));
         }
-
-        menu = new JoinMenu(this, Bukkit.createInventory(null, 27, ChatColor.AQUA + "Join a match"));
-    }
-
-    public JoinMenu getMenu() {
-        return this.menu;
     }
 
     public synchronized List<Match> getMatches() {
@@ -56,15 +49,13 @@ public class MatchManager {
 
         if (old != null)
             matches.set(matches.indexOf(old), newMatch);
-        else
-            matches.add(newMatch);
 
         if (old != null) {
             unloadMatch(old);
             //movePlayers(old, newMatch);
             for (UHCPlayer player : UHC.getPlayerManager().getPlayers(old)) {
                 player.getBukkit().teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
-                menu.show(player.getBukkit());
+                UHC.getMenu().show(player.getBukkit());
             }
         }
 

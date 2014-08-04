@@ -6,6 +6,7 @@ import net.njay.MenuFramework;
 import net.njay.MenuRegistry;
 import net.njay.uhc.listeners.ConnectionListener;
 import net.njay.uhc.match.MatchManager;
+import net.njay.uhc.menu.join.JoinMenu;
 import net.njay.uhc.player.PlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -20,6 +21,7 @@ public class UHC extends JavaPlugin {
     private CommandsManager<CommandSender> commands;
     private static PlayerManager playerManager;
     private static MatchManager matchManager;
+    private static JoinMenu joinMenu;
 
 
     public static UHC getInstance() {
@@ -34,6 +36,8 @@ public class UHC extends JavaPlugin {
         return playerManager;
     }
 
+    public static JoinMenu getMenu(){ return joinMenu; }
+
     public UHC() {
         instance = this;
     }
@@ -46,9 +50,10 @@ public class UHC extends JavaPlugin {
         reloadConfig();
 
         playerManager = new PlayerManager();
-        MenuFramework.enable(new MenuRegistry(getInstance()), playerManager);
 
         matchManager = new MatchManager(2);
+
+        joinMenu = new JoinMenu(matchManager, Bukkit.createInventory(null, 27, ChatColor.GOLD + "Join a match!"));
 
         setupCommands();
         registerListeners();
@@ -61,6 +66,7 @@ public class UHC extends JavaPlugin {
     // register all listeners that are not intended to be disabled
     private void registerListeners() {
         registerEvents(new ConnectionListener());
+        registerEvents(joinMenu);
     }
 
     // registers events for a Listener
