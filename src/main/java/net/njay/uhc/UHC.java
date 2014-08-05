@@ -4,7 +4,9 @@ import com.sk89q.bukkit.util.CommandsManagerRegistration;
 import com.sk89q.minecraft.util.commands.*;
 import net.njay.MenuFramework;
 import net.njay.MenuRegistry;
+import net.njay.uhc.listeners.BoundaryListener;
 import net.njay.uhc.listeners.ConnectionListener;
+import net.njay.uhc.listeners.InteractListener;
 import net.njay.uhc.match.MatchManager;
 import net.njay.uhc.menu.join.JoinMenu;
 import net.njay.uhc.player.PlayerManager;
@@ -66,6 +68,8 @@ public class UHC extends JavaPlugin {
     // register all listeners that are not intended to be disabled
     private void registerListeners() {
         registerEvents(new ConnectionListener());
+        registerEvents(new BoundaryListener());
+        registerEvents(new InteractListener());
         registerEvents(joinMenu);
     }
 

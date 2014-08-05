@@ -76,5 +76,8 @@ public class Config {
         public static final String rotationFileName = get(sectionRoot + "rotation-file-name", "rotation.txt");
     }
 
-
+    public static class Match {
+        private static final String sectionRoot = "match.";
+        public static final int matchRadius = get(sectionRoot + "radius", 250);
+    }
 }

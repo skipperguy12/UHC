@@ -79,5 +79,4 @@ public class MatchManager {
         System.out.println("Unloaded " + match.getWorld().getName());
     }
 
-
 }
