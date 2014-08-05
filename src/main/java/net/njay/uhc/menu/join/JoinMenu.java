@@ -2,18 +2,13 @@ package net.njay.uhc.menu.join;
 
 import com.google.common.collect.Lists;
 import net.njay.Menu;
-import net.njay.MenuManager;
-import net.njay.annotation.MenuInventory;
-import net.njay.uhc.Config;
 import net.njay.uhc.UHC;
 import net.njay.uhc.match.Match;
 import net.njay.uhc.match.MatchManager;
 import net.njay.uhc.match.MatchState;
 import net.njay.uhc.player.UHCPlayer;
-import net.njay.uhc.util.location.LocationUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,7 +18,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class JoinMenu extends Menu implements Listener {

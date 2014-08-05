@@ -16,7 +16,6 @@ import org.joda.time.Instant;
 import java.util.Collection;
 import java.util.Map;
 
-
 /**
  * Class to represent a Match instance
  */
@@ -35,7 +34,7 @@ public class Match {
         this.world = world;
 
         this.countdownManager = new UHCCountdownManager();
-        this.countdownManager.start(new LobbyCountdown(this), 30);
+        this.countdownManager.start(new LobbyCountdown(this), 10);
     }
 
     public int getId() {

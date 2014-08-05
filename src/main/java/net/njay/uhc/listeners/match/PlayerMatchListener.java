@@ -19,6 +19,8 @@ public class PlayerMatchListener implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerLeaveMatchEvent e){
         //TODO: Check to see if there is only one player left, if so, then end the game
+
     }
+
 
 }

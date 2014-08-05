@@ -40,7 +40,8 @@ public class MatchManager {
     }
 
     public synchronized Match cycle(@Nullable Match old) {
-        WorldCreator wc = new WorldCreator("match-" + ++id);
+        if (old == null) id++;
+        WorldCreator wc = new WorldCreator("match-" + id);
 
         Match newMatch = new Match(id, wc.createWorld());
 
@@ -52,8 +53,8 @@ public class MatchManager {
 
         if (old != null) {
             unloadMatch(old);
-            //movePlayers(old, newMatch);
             for (UHCPlayer player : UHC.getPlayerManager().getPlayers(old)) {
+                player.setMatch(null);
                 player.getBukkit().teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
                 UHC.getMenu().show(player.getBukkit());
             }
