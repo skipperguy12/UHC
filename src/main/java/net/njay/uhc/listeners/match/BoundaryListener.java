@@ -1,4 +1,4 @@
-package net.njay.uhc.listeners;
+package net.njay.uhc.listeners.match;
 
 import net.njay.uhc.Config;
 import net.njay.uhc.UHC;

@@ -3,6 +3,7 @@ package net.njay.uhc.match;
 import com.google.common.collect.Maps;
 import com.sk89q.minecraft.util.commands.ChatColor;
 import net.njay.uhc.UHC;
+import net.njay.uhc.event.match.player.PlayerJoinMatchEvent;
 import net.njay.uhc.player.UHCPlayer;
 import net.njay.uhc.timer.UHCCountdown;
 import net.njay.uhc.timer.UHCCountdownManager;
@@ -62,12 +63,13 @@ public class Match {
     /**
      * Adds the provided player to the match, putting him on the default team
      *
-     * @param p the player to add
+     * @param player the player to add
      */
-    public void addPlayer(Player p) {
-        UHCPlayer player = UHC.getPlayerManager().getPlayer(p);
+    public void addPlayer(UHCPlayer player) {
         player.setMatch(this);
 
+        PlayerJoinMatchEvent event = new PlayerJoinMatchEvent(this, player);
+        event.call();
         // TODO: PMHTeam defaultTeam = this.getMap().getModules().getModule(PMHTeamModule.class).getDefaultTeam();
         // TODO: player.setTeam(defaultTeam);
     }

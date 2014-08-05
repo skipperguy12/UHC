@@ -9,6 +9,7 @@ import net.njay.uhc.UHC;
 import net.njay.uhc.match.Match;
 import net.njay.uhc.match.MatchManager;
 import net.njay.uhc.match.MatchState;
+import net.njay.uhc.player.UHCPlayer;
 import net.njay.uhc.util.location.LocationUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -63,14 +64,12 @@ public class JoinMenu extends Menu implements Listener {
         if (!e.getInventory().getName().equals(getInventory().getName())) return;
         if (e.getRawSlot() < matchManager.getMatches().size() && e.getRawSlot() >= 0) {
             Match toJoin = matchManager.getMatches().get(e.getRawSlot());
-            Player player = (Player) e.getWhoClicked();
+            UHCPlayer player =  UHC.getPlayerManager().getPlayer((Player) e.getWhoClicked());
             if (toJoin.getState() == MatchState.STARTING){
-                UHC.getPlayerManager().getPlayer((Player) e.getWhoClicked()).setMatch(toJoin);
-                player.teleport(LocationUtil.findSuitableLocation(new Location(toJoin.getWorld(), 0, 0, 0), Config.Match.matchRadius)); //TODO: Change to lobby spawn
+                toJoin.addPlayer(player);
             }else if (toJoin.getState() == MatchState.IDLE){
-                toJoin.setState(MatchState.STARTING); //TODO: Add a match starting countdown that doesn't start the match until minimum number of players is reached
-                UHC.getPlayerManager().getPlayer(player).setMatch(toJoin);
-                player.teleport(LocationUtil.findSuitableLocation(new Location(toJoin.getWorld(), 0, 0, 0), Config.Match.matchRadius)); //TODO: Change to lobby spawn
+                toJoin.setState(MatchState.STARTING);
+                toJoin.addPlayer(player);
             }else
                 UHC.getPlayerManager().getPlayer((Player) e.getWhoClicked()).getBukkit().sendMessage(ChatColor.RED + "The match state currently does not allow for players to join!");
         }
