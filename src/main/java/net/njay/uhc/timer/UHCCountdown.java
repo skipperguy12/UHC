@@ -1,40 +1,44 @@
 package net.njay.uhc.timer;
 
 import net.njay.uhc.UHC;
+import net.njay.uhc.match.Match;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public abstract class UHCCountdown extends BukkitRunnable {
 
-    protected int length;
-    protected int timeLeft;
+    protected Match match;
+    private int seconds;
 
-    public UHCCountdown(int length){
-        this.length = length;
-        this.timeLeft = length;
+    public UHCCountdown(Match match) {
+        this.match = match;
     }
 
-    public int getLength(){ return this.length; }
-    public int getTimeLeft(){ return this.timeLeft; }
+    public int start(int seconds) {
+        this.seconds = seconds;
+        super.runTaskTimer(UHC.getInstance(), 0, 20);
+        return super.getTaskId();
+    }
+
+    public int getSeconds() {
+        return this.seconds;
+    }
+
+    public Match getMatch() {
+        return this.match;
+    }
 
     @Override
     public void run() {
-        if (timeLeft-- <= 0){
-            timeLeft = 0;
-            onFinish();
-            end();
+        if (seconds <= 0) {
+            this.end();
+            super.cancel();
+        } else {
+            this.tick(seconds--);
         }
     }
 
-    public UHCCountdown start(){
-        runTaskTimer(UHC.getInstance(), 0, 20);
-        return this;
-    }
+    public abstract void tick(int seconds);
 
-    public UHCCountdown end(){
-        cancel();
-        return this;
-    }
-
-    public abstract void onFinish();
+    public abstract void end();
 
 }

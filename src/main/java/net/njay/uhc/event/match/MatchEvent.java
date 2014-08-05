@@ -4,6 +4,7 @@ import net.njay.uhc.event.UHCEvent;
 import net.njay.uhc.match.Match;
 
 public abstract class MatchEvent extends UHCEvent {
+
     protected Match match;
 
     public MatchEvent(Match match) {
@@ -13,4 +14,5 @@ public abstract class MatchEvent extends UHCEvent {
     public Match getMatch() {
         return this.match;
     }
+
 }

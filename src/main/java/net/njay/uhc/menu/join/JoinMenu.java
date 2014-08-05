@@ -29,11 +29,11 @@ public class JoinMenu extends Menu implements Listener {
         super(null, inv);
         this.matchManager = matchManager;
 
-        Bukkit.getScheduler().runTaskTimer(UHC.getInstance(), new Runnable(){ public void run() { populate(); } }, 20, 20*2);
+        Bukkit.getScheduler().runTaskTimer(UHC.getInstance(), new Runnable(){ public void run() { populate(); } }, 20, 20);
     }
 
     public void show(final Player player) {
-        Bukkit.getScheduler().runTaskLater(UHC.getInstance(), new Runnable() { public void run(){ player.openInventory(getInventory()); }}, 20);
+        Bukkit.getScheduler().runTaskLater(UHC.getInstance(), new Runnable() { public void run(){ player.openInventory(getInventory()); }}, 2);
     }
 
     public void populate() {

@@ -5,29 +5,36 @@ import com.sk89q.minecraft.util.commands.ChatColor;
 import net.njay.uhc.UHC;
 import net.njay.uhc.player.UHCPlayer;
 import net.njay.uhc.timer.UHCCountdown;
+import net.njay.uhc.timer.UHCCountdownManager;
 import net.njay.uhc.timer.timers.LobbyCountdown;
-import org.bukkit.Bukkit;
+import net.njay.uhc.timer.timers.StartingCountdown;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.joda.time.Instant;
+
+import java.util.Collection;
+import java.util.Map;
 
 
 /**
  * Class to represent a Match instance
  */
 public class Match {
+
     protected final int id;
     protected final World world;
     protected MatchState state;
-    protected java.util.Map<MatchState, Instant> matchStateInstantMap = Maps.newHashMap();
+    protected Map<MatchState, Instant> matchStateInstantMap = Maps.newHashMap();
 
-    protected UHCCountdown countdown;
+    private UHCCountdownManager countdownManager;
 
     public Match(int id, World world) {
-        setState(MatchState.IDLE);
+        this.setState(MatchState.IDLE);
         this.id = id;
         this.world = world;
-       setCountdown(new LobbyCountdown(25, this).start()); //TODO: SET TIMER LENGTH IN CONFIG
+
+        this.countdownManager = new UHCCountdownManager();
+        this.countdownManager.start(new LobbyCountdown(this), 30);
     }
 
     public int getId() {
@@ -38,9 +45,12 @@ public class Match {
         return world;
     }
 
-
     public MatchState getState() {
         return state;
+    }
+
+    public UHCCountdownManager getCountdownManager() {
+        return this.countdownManager;
     }
 
     public void setState(MatchState newState) {
@@ -62,16 +72,24 @@ public class Match {
         // TODO: player.setTeam(defaultTeam);
     }
 
-    public void setCountdown(UHCCountdown countdown){
-        this.countdown = countdown;
+    public Collection<UHCPlayer> getPlayers() {
+        return UHC.getPlayerManager().getPlayers(this);
     }
 
-    public String getStatusMessage(){
-        switch (state){
+    public void broadcast(String message) {
+        for (UHCPlayer player : this.getPlayers())
+            player.getBukkit().sendMessage(message);
+    }
+
+    public String getStatusMessage() {
+        switch (state) {
             case IDLE:
                 return ChatColor.BLUE + "The match is empty! Be the first to join!";
             case STARTING:
-                return ChatColor.GOLD + "The match will begin in " + ChatColor.DARK_GREEN + (countdown != null ? countdown.getTimeLeft() : 0) + ChatColor.GOLD + " seconds!";
+                // should be safe to assume its a startingcountdown because there should be one running when matchstate == starting
+                UHCCountdown countdown = this.getCountdownManager().getCurrentCountdown();
+                int seconds = countdown == null ? 0 : countdown.getSeconds();
+                return ChatColor.GOLD + "The match will begin in " + ChatColor.DARK_GREEN + seconds + ChatColor.GOLD + " second" + (seconds == 1 ? "!" : "s!");
             case RUNNING:
                 return ChatColor.RED + "The match is already running. You cannot join.";
             case FINISHED:
