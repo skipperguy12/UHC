@@ -52,12 +52,12 @@ public class MatchManager {
             matches.set(matches.indexOf(old), newMatch);
 
         if (old != null) {
-            unloadMatch(old);
             for (UHCPlayer player : UHC.getPlayerManager().getPlayers(old)) {
                 player.setMatch(null);
                 player.getBukkit().teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
                 UHC.getMenu().show(player.getBukkit());
             }
+            unloadMatch(old);
         }
 
         return newMatch;

@@ -17,6 +17,8 @@ public class PlayerLeaveMatchListener implements Listener {
     public void onDeath(PlayerDeathEvent e){
         UHCPlayer player = UHC.getPlayerManager().getPlayer(e.getEntity());
         if (player.getMatch() == null) return;
+        player.getMatch().broadcast(e.getDeathMessage());
+        e.setDeathMessage("");
         PlayerLeaveMatchEvent event = new PlayerLeaveMatchEvent(player.getMatch(), player, PlayerLeaveMatchEvent.LeaveCause.DEATH);
         event.call();
     }
