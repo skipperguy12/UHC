@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.sk89q.minecraft.util.commands.ChatColor;
 import net.njay.uhc.UHC;
 import net.njay.uhc.event.match.player.PlayerJoinMatchEvent;
+import net.njay.uhc.match.spectator.SpectatorHandler;
 import net.njay.uhc.player.UHCPlayer;
 import net.njay.uhc.timer.UHCCountdown;
 import net.njay.uhc.timer.UHCCountdownManager;
@@ -25,7 +26,7 @@ public class Match {
     protected final World world;
     protected MatchState state;
     protected Map<MatchState, Instant> matchStateInstantMap = Maps.newHashMap();
-
+    protected SpectatorHandler spectatorHandler;
     private UHCCountdownManager countdownManager;
 
     public Match(int id, World world) {
@@ -35,6 +36,7 @@ public class Match {
 
         this.countdownManager = new UHCCountdownManager();
         this.countdownManager.start(new LobbyCountdown(this), 10);
+        this.spectatorHandler = new SpectatorHandler(this);
     }
 
     public int getId() {
@@ -69,8 +71,28 @@ public class Match {
 
         PlayerJoinMatchEvent event = new PlayerJoinMatchEvent(this, player);
         event.call();
+
+        spectatorHandler.onAddToMatch(player);
         // TODO: PMHTeam defaultTeam = this.getMap().getModules().getModule(PMHTeamModule.class).getDefaultTeam();
         // TODO: player.setTeam(defaultTeam);
+    }
+
+    public void removePlayer(UHCPlayer player){
+        player.setMatch(null);
+        spectatorHandler.removeSpectator(player);
+        spectatorHandler.onRemoveFromMatch(player);
+    }
+
+    public void addSpectator(UHCPlayer player){
+        spectatorHandler.addSpectator(player);
+    }
+
+    public void removeSpectator(UHCPlayer player){
+        spectatorHandler.removeSpectator(player);
+    }
+
+    public boolean isSpectator(UHCPlayer player){
+        return spectatorHandler.getSpectators().contains(player);
     }
 
     public Collection<UHCPlayer> getPlayers() {

@@ -22,15 +22,27 @@ public class SpectatorHandler {
     public void addSpectator(UHCPlayer player){
         spectators.add(player);
         player.getBukkit().setCollidesWithEntities(false);
-        for (UHCPlayer matchPlayer : match.getPlayers())
-            matchPlayer.getBukkit().hidePlayer(player.getBukkit());
+        hideAll();
     }
 
     public void removeSpectator(UHCPlayer player){
         spectators.remove(player);
         player.getBukkit().setCollidesWithEntities(true);
-        for (UHCPlayer matchPlayer : match.getPlayers())
-            matchPlayer.getBukkit().showPlayer(player.getBukkit());
+        hideAll();
     }
 
+    public void onAddToMatch(UHCPlayer player){
+        hideAll();
+    }
+
+    public void onRemoveFromMatch(UHCPlayer player){
+        for (UHCPlayer spectator : spectators)
+            player.getBukkit().showPlayer(spectator.getBukkit());
+    }
+
+    private void hideAll(){
+        for (UHCPlayer matchPlayer : match.getPlayers())
+            for (UHCPlayer spectator : spectators)
+                matchPlayer.getBukkit().hidePlayer(spectator.getBukkit());
+    }
 }
