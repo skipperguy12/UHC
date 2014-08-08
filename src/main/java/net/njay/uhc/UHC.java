@@ -67,7 +67,7 @@ public class UHC extends JavaPlugin {
         saveConfig();
         reloadConfig();
 
-        // get properties file data
+        // get properties (for the git commit id)
         InputStream propStream = getResource("uhc.properties");
         if (propStream != null) try {
             properties = new Properties();
@@ -88,7 +88,7 @@ public class UHC extends JavaPlugin {
         // wrap up, debug to follow this message
         getLogger().info(this.getName() + " (" + Bukkit.getName() + ") loaded successfully" +
                 (SportBukkitUtil.hasSportBukkitApi() ? " with SportBukkit API" : "") + ".");
-        getLogger().info(this.getName() + " Git: " + this.getCommit());
+        getLogger().info(this.getName() + " Git commit id: " + this.getCommit());
     }
 
     public void onDisable() {
