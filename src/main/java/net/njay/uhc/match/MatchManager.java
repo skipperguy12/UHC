@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import net.minecraft.util.org.apache.commons.io.FileUtils;
 import net.njay.uhc.UHC;
+import net.njay.uhc.component.ComponentManager;
 import net.njay.uhc.event.match.MatchLoadEvent;
 import net.njay.uhc.menu.join.JoinMenu;
 import net.njay.uhc.player.UHCPlayer;
@@ -23,10 +24,13 @@ import java.util.List;
  */
 public class MatchManager {
     private List<Match> matches = Lists.newArrayList();
+    private ComponentManager componentManager;
 
     private static int id = -1;
 
     public MatchManager(int matchCount) {
+        componentManager = new ComponentManager();
+        componentManager.registerComponents();
         if (matchCount <= 0)
             matchCount = 1;
 
@@ -44,6 +48,8 @@ public class MatchManager {
         WorldCreator wc = new WorldCreator("match-" + id);
 
         Match newMatch = new Match(id, wc.createWorld());
+
+        newMatch.getWorld().setGameRuleValue("naturalRegeneration", "false");
 
         MatchLoadEvent matchLoadEvent = new MatchLoadEvent(newMatch);
         Bukkit.getPluginManager().callEvent(matchLoadEvent);

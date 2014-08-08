@@ -1,0 +1,3 @@
+component:
+    enabled-components:
+      - "regen"

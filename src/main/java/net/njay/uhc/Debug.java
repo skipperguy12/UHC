@@ -81,7 +81,7 @@ public class Debug {
      * Enum to represent a log level.
      */
     public enum LogLevel {
-        INFO(0), WARNING(1), SEVERE(2);
+        DEBUG(-1), INFO(0), WARNING(1), SEVERE(2);
 
         int level;
 

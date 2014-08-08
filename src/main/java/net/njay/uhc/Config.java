@@ -1,8 +1,12 @@
 package net.njay.uhc;
 
+import com.google.common.collect.Lists;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Class to interface with Bukkits Configuration system
@@ -66,7 +70,7 @@ public class Config {
         getBukkitConfig().set(path, val);
     }
 
-    public static class Maps {
+    public static class Map {
         private static final String sectionRoot = "maps.";
         public static final String mapsDir = get(sectionRoot + "maps-dir", "maps");
     }
@@ -79,5 +83,10 @@ public class Config {
     public static class Match {
         private static final String sectionRoot = "match.";
         public static final int matchRadius = get(sectionRoot + "radius", 250);
+    }
+
+    public static class Component {
+        private static final String sectionRoot = "component.";
+        public static final ArrayList<String> enabledComponents = get(sectionRoot + "enabled-components", Lists.newArrayList());
     }
 }

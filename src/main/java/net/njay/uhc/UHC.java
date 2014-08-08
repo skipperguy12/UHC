@@ -63,9 +63,7 @@ public class UHC extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        getConfig().options().copyDefaults(true);
-        saveConfig();
-        reloadConfig();
+        saveDefaultConfig();
 
         // get properties (for the git commit id)
         InputStream propStream = getResource("uhc.properties");
