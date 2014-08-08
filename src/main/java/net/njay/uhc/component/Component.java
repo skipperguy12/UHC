@@ -14,7 +14,7 @@ public abstract class Component implements Listener {
     }
 
     public void enable() {
-        enabled = false;
+        enabled = true;
         Bukkit.getPluginManager().registerEvents(this, UHC.getInstance());
     }
 
@@ -28,7 +28,7 @@ public abstract class Component implements Listener {
     }
 
     protected void setEnabled(boolean enabled) {
-        if (this.enabled == enabled)
+        if (this.enabled && this.enabled == enabled)
             throw new IllegalStateException("State already set!");
 
         this.enabled = enabled;

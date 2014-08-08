@@ -39,7 +39,7 @@ public class PlayerLeaveMatchListener implements Listener {
                     + ChatColor.GOLD + " has left the match!");
         e.getMatch().broadcast(ChatColor.RED.toString() + UHC.getPlayerManager().getPlayers(e.getMatch()).size() +
                 ChatColor.GOLD + " players remain.");
-        if (UHC.getPlayerManager().getPlayers(e.getMatch()).size() <= 1){
+        if (UHC.getPlayerManager().getPlayers(e.getMatch()).size() == 1){
             e.getMatch().broadcast(ChatColor.BLUE + UHC.getPlayerManager().getPlayers(e.getMatch()).iterator().next().getBukkit().getName() +
                 ChatColor.GREEN + " has won the match! Congrats!");
             e.getMatch().getCountdownManager().start(new EndingCountdown(e.getMatch()), 10);
