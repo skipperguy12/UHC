@@ -10,6 +10,7 @@ import net.njay.uhc.listeners.match.PlayerMatchListener;
 import net.njay.uhc.match.MatchManager;
 import net.njay.uhc.menu.join.JoinMenu;
 import net.njay.uhc.player.PlayerManager;
+import net.njay.uhc.util.location.SportBukkitUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -17,8 +18,17 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+import java.util.logging.Level;
+
 public class UHC extends JavaPlugin {
     private static UHC instance;
+
+    // UHC internal properties
+    private static Properties properties = null;
+
     // sk89q's command framework
     private CommandsManager<CommandSender> commands;
     private static PlayerManager playerManager;
@@ -30,6 +40,10 @@ public class UHC extends JavaPlugin {
         return instance;
     }
 
+    public String getCommit() {
+        return properties == null ? "??" : properties.getProperty("git-sha-1");
+    }
+
     public static MatchManager getMatchManager() {
         return matchManager;
     }
@@ -38,7 +52,9 @@ public class UHC extends JavaPlugin {
         return playerManager;
     }
 
-    public static JoinMenu getMenu(){ return joinMenu; }
+    public static JoinMenu getMenu() {
+        return joinMenu;
+    }
 
     public UHC() {
         instance = this;
@@ -51,6 +67,15 @@ public class UHC extends JavaPlugin {
         saveConfig();
         reloadConfig();
 
+        // get properties file data
+        InputStream propStream = getResource("uhc.properties");
+        if (propStream != null) try {
+            properties = new Properties();
+            properties.load(propStream);
+        } catch (IOException e) {
+            Debug.log("Failed to load properties file.", Debug.LogLevel.SEVERE);
+        }
+
         playerManager = new PlayerManager();
 
         matchManager = new MatchManager(2);
@@ -59,6 +84,11 @@ public class UHC extends JavaPlugin {
 
         setupCommands();
         registerListeners();
+
+        // wrap up, debug to follow this message
+        getLogger().info(this.getName() + " (" + Bukkit.getName() + ") loaded successfully" +
+                (SportBukkitUtil.hasSportBukkitApi() ? " with SportBukkit API" : "") + ".");
+        getLogger().info(this.getName() + " Git: " + this.getCommit());
     }
 
     public void onDisable() {
