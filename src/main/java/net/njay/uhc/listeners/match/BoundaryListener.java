@@ -22,5 +22,4 @@ public class BoundaryListener implements Listener {
             e.setCancelled(true);
         }
     }
-
 }

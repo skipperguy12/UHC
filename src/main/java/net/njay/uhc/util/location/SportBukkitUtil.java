@@ -3,9 +3,6 @@ package net.njay.uhc.util.location;
 import net.njay.uhc.Debug;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 

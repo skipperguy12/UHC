@@ -2,7 +2,6 @@ package net.njay.uhc.listeners.match;
 
 import net.njay.uhc.Config;
 import net.njay.uhc.event.match.player.PlayerJoinMatchEvent;
-import net.njay.uhc.event.match.player.PlayerLeaveMatchEvent;
 import net.njay.uhc.util.location.LocationUtil;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;

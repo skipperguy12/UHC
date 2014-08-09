@@ -2,6 +2,7 @@ package net.njay.uhc;
 
 import com.sk89q.bukkit.util.CommandsManagerRegistration;
 import com.sk89q.minecraft.util.commands.*;
+import net.njay.uhc.command.SelectMatchCommand;
 import net.njay.uhc.listeners.ConnectionListener;
 import net.njay.uhc.listeners.match.*;
 import net.njay.uhc.match.MatchManager;
@@ -18,7 +19,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import java.util.logging.Level;
 
 public class UHC extends JavaPlugin {
     private static UHC instance;
@@ -117,6 +117,7 @@ public class UHC extends JavaPlugin {
         };
         CommandsManagerRegistration cmdRegister = new CommandsManagerRegistration(this, this.commands);
         //Register your commands here
+        cmdRegister.register(SelectMatchCommand.class);
     }
 
     // Passes commands from Bukkit to sk89q

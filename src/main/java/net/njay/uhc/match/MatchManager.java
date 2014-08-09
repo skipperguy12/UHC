@@ -6,19 +6,14 @@ import net.minecraft.util.org.apache.commons.io.FileUtils;
 import net.njay.uhc.UHC;
 import net.njay.uhc.component.ComponentManager;
 import net.njay.uhc.event.match.MatchLoadEvent;
-import net.njay.uhc.menu.join.JoinMenu;
 import net.njay.uhc.player.UHCPlayer;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nullable;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 /**

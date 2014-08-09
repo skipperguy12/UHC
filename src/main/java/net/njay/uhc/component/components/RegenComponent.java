@@ -7,7 +7,6 @@ import net.njay.uhc.component.ComponentManager;
 import net.njay.uhc.event.match.MatchBeginEvent;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 

@@ -1,12 +1,14 @@
 package net.njay.uhc;
 
 import com.google.common.collect.Lists;
+import net.njay.uhc.util.location.LocationUtil;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Class to interface with Bukkits Configuration system
@@ -88,5 +90,10 @@ public class Config {
     public static class Component {
         private static final String sectionRoot = "component.";
         public static final ArrayList<String> enabledComponents = get(sectionRoot + "enabled-components", Lists.newArrayList());
+    }
+
+    public static class Spawns {
+        private static final String sectionRoot = "spawns.";
+        public static final Location serverSpawn = get(sectionRoot + "spawn", LocationUtil.placeOnGround(new Location(Bukkit.getWorlds().get(0), 0, 200, 0)));
     }
 }

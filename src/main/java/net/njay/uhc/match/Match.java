@@ -9,9 +9,7 @@ import net.njay.uhc.player.UHCPlayer;
 import net.njay.uhc.timer.UHCCountdown;
 import net.njay.uhc.timer.UHCCountdownManager;
 import net.njay.uhc.timer.timers.LobbyCountdown;
-import net.njay.uhc.timer.timers.StartingCountdown;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
 import org.joda.time.Instant;
 
 import java.util.Collection;
