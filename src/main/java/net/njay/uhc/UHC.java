@@ -3,10 +3,7 @@ package net.njay.uhc;
 import com.sk89q.bukkit.util.CommandsManagerRegistration;
 import com.sk89q.minecraft.util.commands.*;
 import net.njay.uhc.listeners.ConnectionListener;
-import net.njay.uhc.listeners.match.BoundaryListener;
-import net.njay.uhc.listeners.match.PreMatchListener;
-import net.njay.uhc.listeners.match.PlayerLeaveMatchListener;
-import net.njay.uhc.listeners.match.PlayerMatchListener;
+import net.njay.uhc.listeners.match.*;
 import net.njay.uhc.match.MatchManager;
 import net.njay.uhc.menu.join.JoinMenu;
 import net.njay.uhc.player.PlayerManager;
@@ -100,6 +97,8 @@ public class UHC extends JavaPlugin {
         registerEvents(new PreMatchListener());
         registerEvents(new PlayerMatchListener());
         registerEvents(new PlayerLeaveMatchListener());
+        registerEvents(new RespawnListener());
+
         registerEvents(joinMenu);
     }
 

@@ -24,7 +24,7 @@ public class PlayerLeaveMatchListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onDeath(PlayerQuitEvent e) {
+    public void onQuit(PlayerQuitEvent e) {
         UHCPlayer player = UHC.getPlayerManager().getPlayer(e.getPlayer());
         if (player.getMatch() == null) return;
         PlayerLeaveMatchEvent event = new PlayerLeaveMatchEvent(player.getMatch(), player, PlayerLeaveMatchEvent.LeaveCause.QUIT);
@@ -45,6 +45,8 @@ public class PlayerLeaveMatchListener implements Listener {
             e.getMatch().broadcast(ChatColor.BLUE + UHC.getPlayerManager().getParticipatingPlayers(e.getMatch()).iterator().next().getBukkit().getName() +
                     ChatColor.GREEN + " has won the match! Congrats!");
             e.getMatch().getCountdownManager().start(new EndingCountdown(e.getMatch()), 10);
+        }else if (UHC.getPlayerManager().getParticipatingPlayers(e.getMatch()).size() < 1){
+            e.getMatch().getCountdownManager().start(new EndingCountdown(e.getMatch()), 1);
         }
     }
 

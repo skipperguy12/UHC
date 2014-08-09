@@ -15,12 +15,4 @@ public class PlayerMatchListener implements Listener {
         e.getPlayer().getBukkit().teleport(LocationUtil.findSuitableLocation(
                 new Location(e.getMatch().getWorld(), 0, 0, 0), Config.Match.matchRadius));
     }
-
-    @EventHandler
-    public void onPlayerQuit(PlayerLeaveMatchEvent e){
-        //TODO: Check to see if there is only one player left, if so, then end the game
-
-    }
-
-
 }

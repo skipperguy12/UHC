@@ -46,6 +46,7 @@ public class SpectatorHandler {
     }
 
     public void onAddToMatch(UHCPlayer player) {
+        player.getBukkit().setAllowFlight(false);
         hideAll();
     }
 

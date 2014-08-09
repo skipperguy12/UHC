@@ -10,6 +10,7 @@ import net.njay.uhc.menu.join.JoinMenu;
 import net.njay.uhc.player.UHCPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.WorldCreator;
 
 import javax.annotation.Nullable;
@@ -46,8 +47,9 @@ public class MatchManager {
     public synchronized Match cycle(@Nullable Match old) {
         if (old == null) id++;
         WorldCreator wc = new WorldCreator("match-" + id);
-
-        Match newMatch = new Match(id, wc.createWorld());
+        World newWorld = wc.createWorld();
+        newWorld.setAutoSave(false);
+        Match newMatch = new Match(id, newWorld);
 
         newMatch.getWorld().setGameRuleValue("naturalRegeneration", "false");
 
@@ -59,8 +61,10 @@ public class MatchManager {
 
         if (old != null) {
             for (UHCPlayer player : UHC.getPlayerManager().getPlayers(old)) {
+                System.out.println("teleportout " + player.getBukkit().getName());
                 player.setMatch(null);
                 player.getBukkit().teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
+                System.out.println("newworld " + player.getBukkit().getWorld());
                 UHC.getMenu().show(player.getBukkit());
             }
             unloadMatch(old);
@@ -76,13 +80,12 @@ public class MatchManager {
      */
     public void unloadMatch(Match match) {
         File dir = match.getWorld().getWorldFolder();
-        Bukkit.unloadWorld(match.getWorld(), true);
+        System.out.println(Bukkit.unloadWorld(match.getWorld(), true));
         try {
             FileUtils.deleteDirectory(dir);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         System.out.println("Unloaded " + match.getWorld().getName());
     }
 
