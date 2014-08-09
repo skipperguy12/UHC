@@ -2,6 +2,7 @@ package net.njay.uhc.match;
 
 import com.google.common.collect.Maps;
 import com.sk89q.minecraft.util.commands.ChatColor;
+import net.njay.uhc.Config;
 import net.njay.uhc.UHC;
 import net.njay.uhc.event.match.player.PlayerJoinMatchEvent;
 import net.njay.uhc.match.spectator.SpectatorHandler;
@@ -33,7 +34,7 @@ public class Match {
         this.world = world;
 
         this.countdownManager = new UHCCountdownManager();
-        this.countdownManager.start(new LobbyCountdown(this), 10);
+        this.countdownManager.start(new LobbyCountdown(this), Config.Match.playerwaitTime);
         this.spectatorHandler = new SpectatorHandler(this);
     }
 

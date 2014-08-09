@@ -1,6 +1,7 @@
 package net.njay.uhc.listeners.match;
 
 import com.sk89q.minecraft.util.commands.ChatColor;
+import net.njay.uhc.Config;
 import net.njay.uhc.UHC;
 import net.njay.uhc.event.match.player.PlayerLeaveMatchEvent;
 import net.njay.uhc.match.Match;
@@ -39,7 +40,7 @@ public class PlayerLeaveMatchListener implements Listener {
         if (UHC.getPlayerManager().getParticipatingPlayers(e.getMatch()).size() == 1) {
             e.getMatch().broadcast(ChatColor.BLUE + UHC.getPlayerManager().getParticipatingPlayers(e.getMatch()).iterator().next().getBukkit().getName() +
                     ChatColor.GREEN + " has won the match! Congrats!");
-            e.getMatch().getCountdownManager().start(new EndingCountdown(e.getMatch()), 10);
+            e.getMatch().getCountdownManager().start(new EndingCountdown(e.getMatch()), Config.Match.endTime);
         }else if (UHC.getPlayerManager().getParticipatingPlayers(e.getMatch()).size() < 1){
             e.getMatch().getCountdownManager().start(new EndingCountdown(e.getMatch()), 1);
         }
