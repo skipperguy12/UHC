@@ -14,7 +14,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class PlayerLeaveMatchListener implements Listener {
 
     @EventHandler
-    public void onDeath(PlayerDeathEvent e){
+    public void onDeath(PlayerDeathEvent e) {
         UHCPlayer player = UHC.getPlayerManager().getPlayer(e.getEntity());
         if (player.getMatch() == null) return;
         player.getMatch().broadcast(e.getDeathMessage());
@@ -24,7 +24,7 @@ public class PlayerLeaveMatchListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onDeath(PlayerQuitEvent e){
+    public void onDeath(PlayerQuitEvent e) {
         UHCPlayer player = UHC.getPlayerManager().getPlayer(e.getPlayer());
         if (player.getMatch() == null) return;
         PlayerLeaveMatchEvent event = new PlayerLeaveMatchEvent(player.getMatch(), player, PlayerLeaveMatchEvent.LeaveCause.QUIT);
@@ -32,16 +32,18 @@ public class PlayerLeaveMatchListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerLeave(PlayerLeaveMatchEvent e){
-        e.getPlayer().setMatch(null);
+    public void onPlayerLeave(PlayerLeaveMatchEvent e) {
         if (e.getCause() == PlayerLeaveMatchEvent.LeaveCause.QUIT)
             e.getMatch().broadcast(ChatColor.BLUE + e.getPlayer().getBukkit().getName()
                     + ChatColor.GOLD + " has left the match!");
-        e.getMatch().broadcast(ChatColor.RED.toString() + UHC.getPlayerManager().getPlayers(e.getMatch()).size() +
+        else if (e.getCause() == PlayerLeaveMatchEvent.LeaveCause.DEATH)
+            e.getMatch().addSpectator(e.getPlayer());
+
+        e.getMatch().broadcast(ChatColor.RED.toString() + UHC.getPlayerManager().getParticipatingPlayers(e.getMatch()).size() +
                 ChatColor.GOLD + " players remain.");
-        if (UHC.getPlayerManager().getPlayers(e.getMatch()).size() == 1){
-            e.getMatch().broadcast(ChatColor.BLUE + UHC.getPlayerManager().getPlayers(e.getMatch()).iterator().next().getBukkit().getName() +
-                ChatColor.GREEN + " has won the match! Congrats!");
+        if (UHC.getPlayerManager().getParticipatingPlayers(e.getMatch()).size() == 1) {
+            e.getMatch().broadcast(ChatColor.BLUE + UHC.getPlayerManager().getParticipatingPlayers(e.getMatch()).iterator().next().getBukkit().getName() +
+                    ChatColor.GREEN + " has won the match! Congrats!");
             e.getMatch().getCountdownManager().start(new EndingCountdown(e.getMatch()), 10);
         }
     }

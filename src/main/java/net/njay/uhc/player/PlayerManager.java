@@ -62,4 +62,17 @@ public class PlayerManager extends MenuPlayerManager {
             if (p.getMatch() != null && p.getMatch().equals(m)) returning.add(p);
         return returning;
     }
+
+    /**
+     * Returns a list of participating PMHPlayers in the specified match
+     *
+     * @param m The Match to fetch the list from
+     * @return The list of PMHPlayers
+     */
+    public Collection<UHCPlayer> getParticipatingPlayers(Match m) {
+        List<UHCPlayer> returning = Lists.newArrayList();
+        for (UHCPlayer p : players.values())
+            if (p.getMatch() != null && p.getMatch().equals(m) && !(p.getMatch().isSpectator(p))) returning.add(p);
+        return returning;
+    }
 }

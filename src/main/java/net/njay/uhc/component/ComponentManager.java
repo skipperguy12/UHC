@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import net.njay.uhc.Config;
 import net.njay.uhc.Debug;
 import net.njay.uhc.component.components.RegenComponent;
+import net.njay.uhc.component.components.SpectatorComponent;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -14,11 +15,21 @@ public class ComponentManager {
 
 
     public void registerComponents() {
+        // =========================================
+        // ============  CAN'T DISABLE  ============
+        // =========================================
+        components.put("spectator", new SpectatorComponent(this));
+        components.get("spectator").enable();
+
+        // =========================================
+        // =============  CONFIGURABLE  ============
+        // =========================================
         // this is basically just default UHC, but whatever, disable it if you want!
         components.put("regen", new RegenComponent(this));
         components.get("regen").setEnabled(Config.Component.enabledComponents.contains("regen"));
 
 
+        // Debug messages!
         for (Component entry : components.values())
             Debug.log(getName(entry.getClass()) + " component " + (entry.isEnabled() ? "enabled" : "disabled"), Debug.LogLevel.DEBUG);
     }
