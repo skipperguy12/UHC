@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
+import org.bukkit.entity.Player;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -45,27 +46,30 @@ public class MatchManager {
     }
 
     public synchronized Match cycle(@Nullable Match old) {
-        if (old == null) id++;
-        WorldCreator wc = new WorldCreator("match-" + id);
+        int currentId;
+        if (old == null)
+            currentId = ++id;
+        else
+            currentId = old.getId();
+        WorldCreator wc = new WorldCreator("match-" + currentId);
         World newWorld = wc.createWorld();
         newWorld.setAutoSave(false);
-        Match newMatch = new Match(id, newWorld);
+        Match newMatch = new Match(currentId, newWorld);
 
         newMatch.getWorld().setGameRuleValue("naturalRegeneration", "false");
 
         MatchLoadEvent matchLoadEvent = new MatchLoadEvent(newMatch);
         Bukkit.getPluginManager().callEvent(matchLoadEvent);
 
-        if (old != null)
+        if (old != null) {
             matches.set(matches.indexOf(old), newMatch);
 
-        if (old != null) {
-            for (UHCPlayer player : UHC.getPlayerManager().getPlayers(old)) {
-                System.out.println("teleportout " + player.getBukkit().getName());
-                player.setMatch(null);
-                player.getBukkit().teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
-                System.out.println("newworld " + player.getBukkit().getWorld());
-                UHC.getMenu().show(player.getBukkit());
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                if (!player.getWorld().getName().equals(old.getWorld().getName())) continue;
+                UHCPlayer uhcPlayer = UHC.getPlayerManager().getPlayer(player);
+                uhcPlayer.setMatch(null);
+                player.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
+                UHC.getMenu().show(player);
             }
             unloadMatch(old);
         }
@@ -80,7 +84,7 @@ public class MatchManager {
      */
     public void unloadMatch(Match match) {
         File dir = match.getWorld().getWorldFolder();
-        System.out.println(Bukkit.unloadWorld(match.getWorld(), true));
+        Bukkit.unloadWorld(match.getWorld(), false);
         try {
             FileUtils.deleteDirectory(dir);
         } catch (Exception e) {

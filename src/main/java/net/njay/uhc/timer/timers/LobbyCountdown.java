@@ -25,7 +25,7 @@ public class LobbyCountdown extends UHCCountdown {
             //TODO: TELL PLAYERS THAT THERE ARE NOT ENOUGH TO START
             match.getCountdownManager().start(new LobbyCountdown(match), 10); //idk what time to restart it with, using 10 for now
         } else {
-            match.getCountdownManager().start(new StartingCountdown(match), 2);
+            match.getCountdownManager().start(new StartingCountdown(match), 10);
             match.setState(MatchState.STARTING);
         }
     }

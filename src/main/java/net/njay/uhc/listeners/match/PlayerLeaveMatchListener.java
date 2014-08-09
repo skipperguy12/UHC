@@ -33,10 +33,10 @@ public class PlayerLeaveMatchListener implements Listener {
 
     @EventHandler
     public void onPlayerLeave(PlayerLeaveMatchEvent e) {
-        if (e.getCause() == PlayerLeaveMatchEvent.LeaveCause.QUIT)
+        if (e.getCause() == PlayerLeaveMatchEvent.LeaveCause.QUIT) {
             e.getMatch().broadcast(ChatColor.BLUE + e.getPlayer().getBukkit().getName()
                     + ChatColor.GOLD + " has left the match!");
-        else if (e.getCause() == PlayerLeaveMatchEvent.LeaveCause.DEATH)
+        }else if (e.getCause() == PlayerLeaveMatchEvent.LeaveCause.DEATH)
             e.getMatch().addSpectator(e.getPlayer());
 
         e.getMatch().broadcast(ChatColor.RED.toString() + UHC.getPlayerManager().getParticipatingPlayers(e.getMatch()).size() +
