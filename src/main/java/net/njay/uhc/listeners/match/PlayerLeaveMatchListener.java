@@ -7,6 +7,7 @@ import net.njay.uhc.event.match.player.PlayerLeaveMatchEvent;
 import net.njay.uhc.match.Match;
 import net.njay.uhc.player.UHCPlayer;
 import net.njay.uhc.timer.timers.EndingCountdown;
+import net.njay.uhc.util.location.teleport.spawn.ForceRespawnUtil;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -17,6 +18,7 @@ public class PlayerLeaveMatchListener implements Listener {
 
     @EventHandler
     public void onDeath(PlayerDeathEvent e) {
+        ForceRespawnUtil.forceRespawn(e.getEntity());
         UHCPlayer player = UHC.getPlayerManager().getPlayer(e.getEntity());
         if (player.getMatch() == null) return;
         player.getMatch().broadcast(e.getDeathMessage());
@@ -45,7 +47,7 @@ public class PlayerLeaveMatchListener implements Listener {
     private void checkEnd(Match match){
         if (UHC.getPlayerManager().getParticipatingPlayers(match).size() == 1) {
            match.broadcast(ChatColor.BLUE + UHC.getPlayerManager().getParticipatingPlayers(match).iterator().next().getBukkit().getName() +
-                    ChatColor.GREEN + " has won the match! Congrats!");
+                   ChatColor.GREEN + " has won the match! Congrats!");
             match.getCountdownManager().start(new EndingCountdown(match), Config.Match.endTime);
         }else if (UHC.getPlayerManager().getParticipatingPlayers(match).size() < 1){
             match.getCountdownManager().start(new EndingCountdown(match), 1);
