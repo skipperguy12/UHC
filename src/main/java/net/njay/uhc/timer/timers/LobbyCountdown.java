@@ -4,6 +4,7 @@ import net.njay.uhc.Config;
 import net.njay.uhc.UHC;
 import net.njay.uhc.match.Match;
 import net.njay.uhc.match.MatchState;
+import net.njay.uhc.match.PartyMatch;
 import net.njay.uhc.player.UHCPlayer;
 import net.njay.uhc.timer.UHCCountdown;
 
@@ -26,7 +27,7 @@ public class LobbyCountdown extends UHCCountdown {
             //TODO: TELL PLAYERS THAT THERE ARE NOT ENOUGH TO START
             match.getCountdownManager().start(new LobbyCountdown(match), Config.Match.playerwaitTime); //idk what time to restart it with, using 10 for now
         } else {
-            match.getCountdownManager().start(new StartingCountdown(match), Config.Match.lobbyTime);
+            match.getCountdownManager().start(new StartingCountdown(match), match instanceof PartyMatch ? Config.Match.partyLobbyTime : Config.Match.lobbyTime);
             match.setState(MatchState.STARTING);
         }
     }

@@ -6,6 +6,7 @@ import net.njay.uhc.UHC;
 import net.njay.uhc.match.Match;
 import net.njay.uhc.match.MatchManager;
 import net.njay.uhc.match.MatchState;
+import net.njay.uhc.match.PartyMatch;
 import net.njay.uhc.player.UHCPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -45,6 +46,8 @@ public class JoinMenu extends Menu implements Listener {
             List<String> lore = itemMeta.getLore();
             if (lore == null) lore = Lists.newArrayList();
             lore.add(ChatColor.GOLD.toString() + UHC.getPlayerManager().getPlayers(match).size() + "/24");
+            if (match instanceof PartyMatch)
+                lore.add(ChatColor.BLUE + "Party Size: " + ChatColor.GOLD + ((PartyMatch)match).getPartySize());
             lore.add(match.getStatusMessage());
             itemMeta.setLore(lore);
             wool.setItemMeta(itemMeta);
@@ -61,9 +64,11 @@ public class JoinMenu extends Menu implements Listener {
             UHCPlayer player =  UHC.getPlayerManager().getPlayer((Player) e.getWhoClicked());
             if (toJoin.getState() == MatchState.STARTING){
                 toJoin.addPlayer(player);
+                player.setMatch(toJoin);
             }else if (toJoin.getState() == MatchState.IDLE){
                 toJoin.setState(MatchState.STARTING);
                 toJoin.addPlayer(player);
+                player.setMatch(toJoin);
             }else
                 UHC.getPlayerManager().getPlayer((Player) e.getWhoClicked()).getBukkit().sendMessage(ChatColor.RED + "The match state currently does not allow for players to join!");
         }

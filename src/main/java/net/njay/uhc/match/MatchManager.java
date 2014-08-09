@@ -32,15 +32,16 @@ public class MatchManager {
             matchCount = 1;
 
         for (int i = 0; i < matchCount; i++) {
-            matches.add(cycle(null));
+            matches.add(cycle(null, -1));
         }
+        matches.add(cycle(null, 2));
     }
 
     public synchronized List<Match> getMatches() {
         return ImmutableList.copyOf(matches);
     }
 
-    public synchronized Match cycle(@Nullable Match old) {
+    public synchronized Match cycle(@Nullable Match old, int partySize) {
         int currentId;
         if (old == null)
             currentId = ++id;
@@ -49,10 +50,11 @@ public class MatchManager {
         WorldCreator wc = new WorldCreator("match-" + currentId);
         World newWorld = wc.createWorld();
         newWorld.setAutoSave(false);
-        Match newMatch = new Match(currentId, newWorld);
-
-        newMatch.getWorld().setGameRuleValue("naturalRegeneration", "false");
-
+        Match newMatch;
+        if (partySize < 1)
+            newMatch = new Match(currentId, newWorld);
+        else
+            newMatch = new PartyMatch(currentId, newWorld, partySize);
         MatchLoadEvent matchLoadEvent = new MatchLoadEvent(newMatch);
         Bukkit.getPluginManager().callEvent(matchLoadEvent);
 
