@@ -1,6 +1,7 @@
 package net.njay.uhc;
 
 import com.google.common.collect.Lists;
+import com.sk89q.minecraft.util.commands.ChatColor;
 import net.njay.uhc.util.location.LocationUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -98,5 +99,12 @@ public class Config {
     public static class Spawns {
         private static final String sectionRoot = "spawns.";
         public static final Location serverSpawn = get(sectionRoot + "spawn", LocationUtil.placeOnGround(new Location(Bukkit.getWorlds().get(0), 0, 200, 0)));
+    }
+
+    public static class Messages{
+        private static final String sectionRoot = "messages.";
+        public static final String joinMessage = get(sectionRoot + "join", ChatColor.GREEN + "Welcome to our UHC server!");
+        public static final String leaveMatchFail = get(sectionRoot + "leaveMatchFail", ChatColor.RED + "You cannot leave a match because you are not in one!");
+        public static final String alreadyInMatch = get(sectionRoot + "alreadyInMatch", ChatColor.RED + "Please leave the current match before joining a new one!");
     }
 }

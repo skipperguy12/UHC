@@ -23,6 +23,7 @@ public class PlayerLeaveMatchListener implements Listener {
         e.setDeathMessage("");
         player.getMatch().addSpectator(player);
         broadcastRemaining(player.getMatch());
+        checkEnd(player.getMatch());
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -35,14 +36,19 @@ public class PlayerLeaveMatchListener implements Listener {
 
     @EventHandler
     public void onPlayerLeave(PlayerLeaveMatchEvent e) {
+        e.getPlayer().getBukkit().teleport(Config.Spawns.serverSpawn);
         e.getMatch().removePlayer(e.getPlayer());
         broadcastRemaining(e.getMatch());
-        if (UHC.getPlayerManager().getParticipatingPlayers(e.getMatch()).size() == 1) {
-            e.getMatch().broadcast(ChatColor.BLUE + UHC.getPlayerManager().getParticipatingPlayers(e.getMatch()).iterator().next().getBukkit().getName() +
+        checkEnd(e.getMatch());
+    }
+
+    private void checkEnd(Match match){
+        if (UHC.getPlayerManager().getParticipatingPlayers(match).size() == 1) {
+           match.broadcast(ChatColor.BLUE + UHC.getPlayerManager().getParticipatingPlayers(match).iterator().next().getBukkit().getName() +
                     ChatColor.GREEN + " has won the match! Congrats!");
-            e.getMatch().getCountdownManager().start(new EndingCountdown(e.getMatch()), Config.Match.endTime);
-        }else if (UHC.getPlayerManager().getParticipatingPlayers(e.getMatch()).size() < 1){
-            e.getMatch().getCountdownManager().start(new EndingCountdown(e.getMatch()), 1);
+            match.getCountdownManager().start(new EndingCountdown(match), Config.Match.endTime);
+        }else if (UHC.getPlayerManager().getParticipatingPlayers(match).size() < 1){
+            match.getCountdownManager().start(new EndingCountdown(match), 1);
         }
     }
 
