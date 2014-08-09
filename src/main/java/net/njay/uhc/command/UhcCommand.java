@@ -41,4 +41,8 @@ public class UhcCommand {
         PlayerLeaveMatchEvent event = new PlayerLeaveMatchEvent(player.getMatch(), player);
         event.call();
     }
+
+    @Command(aliases = { "p", "party" }, desc = "UHC Party supercommand", min = 0, max = -1)
+    @NestedCommand(PartyCommand.class)
+    public static void partyParent(CommandContext args, CommandSender sender) throws CommandException { }
 }

@@ -8,13 +8,19 @@ import java.util.List;
 
 public class Party {
 
+    private String name;
     private List<UHCPlayer> members;
+    private List<UHCPlayer> invites;
     private PartyScoreboard scoreboard;
 
-    public Party(UHCPlayer owner){
+    public Party(String name, UHCPlayer owner){
+        this.name = name;
        members = Lists.newArrayList(owner);
+       invites = Lists.newArrayList();
        scoreboard = new PartyScoreboard(this);
     }
+
+    public String getName(){ return this.name; }
 
     public void addPlayer(UHCPlayer player){
         members.add(player);
@@ -28,6 +34,18 @@ public class Party {
 
     public List<UHCPlayer> getMembers(){
         return ImmutableList.copyOf(members);
+    }
+
+    public void invite(UHCPlayer player){
+        invites.add(player);
+    }
+
+    public boolean isInvited(UHCPlayer player){
+        return invites.contains(player);
+    }
+
+    public UHCPlayer getOwner(){
+        return getMembers().get(0);
     }
 
 }
