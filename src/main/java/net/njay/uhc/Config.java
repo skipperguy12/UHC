@@ -88,7 +88,7 @@ public class Config {
         public static final int matchRadius = get(sectionRoot + "radius", 250);
         public static final int playerwaitTime= get(sectionRoot + "time.playerwait", 10);
         public static final int lobbyTime = get(sectionRoot + "time.lobbysolo", 15);
-        public static final int partyLobbyTime = get(sectionRoot + "time.lobbyparty", 60);
+        public static final int partyLobbyTime = get(sectionRoot + "time.lobbyparty", 45);
         public static final int endTime = get(sectionRoot + "time.end", 10);
     }
 

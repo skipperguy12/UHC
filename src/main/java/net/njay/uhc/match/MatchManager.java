@@ -34,7 +34,7 @@ public class MatchManager {
         for (int i = 0; i < matchCount; i++) {
             matches.add(cycle(null, -1));
         }
-        matches.add(cycle(null, 2));
+        matches.add(cycle(null, 1));
     }
 
     public synchronized List<Match> getMatches() {

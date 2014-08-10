@@ -25,7 +25,7 @@ public class LobbyCountdown extends UHCCountdown {
         Collection<UHCPlayer> players = UHC.getPlayerManager().getPlayers(match);
         if (players.size() < 1) { //TODO: SET MIN_PLAYERS TO VARIABLE
             //TODO: TELL PLAYERS THAT THERE ARE NOT ENOUGH TO START
-            match.getCountdownManager().start(new LobbyCountdown(match), Config.Match.playerwaitTime); //idk what time to restart it with, using 10 for now
+            match.getCountdownManager().start(new LobbyCountdown(match), Config.Match.playerwaitTime);
         } else {
             match.getCountdownManager().start(new StartingCountdown(match), match instanceof PartyMatch ? Config.Match.partyLobbyTime : Config.Match.lobbyTime);
             match.setState(MatchState.STARTING);

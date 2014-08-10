@@ -5,6 +5,7 @@ import net.minecraft.util.com.google.common.collect.ImmutableList;
 import net.njay.uhc.match.party.Party;
 import net.njay.uhc.player.UHCPlayer;
 import org.bukkit.World;
+import org.bukkit.craftbukkit.libs.jline.internal.Log;
 
 import java.util.List;
 
@@ -38,6 +39,18 @@ public class PartyMatch extends Match {
                 if (player.equals(partyPlayer))
                     return party;
         return null;
+    }
+
+    public List<Party> getAliveParties(){
+        List<Party> validParties = Lists.newArrayList();
+        for (Party party : parties){
+            for (UHCPlayer player : party.getMembers())
+                if (!isSpectator(player)){
+                    validParties.add(party);
+                    continue;
+                }
+        }
+        return validParties;
     }
 
 }

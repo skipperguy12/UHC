@@ -5,6 +5,8 @@ import net.njay.uhc.Config;
 import net.njay.uhc.UHC;
 import net.njay.uhc.event.match.player.PlayerLeaveMatchEvent;
 import net.njay.uhc.match.Match;
+import net.njay.uhc.match.MatchState;
+import net.njay.uhc.match.PartyMatch;
 import net.njay.uhc.player.UHCPlayer;
 import net.njay.uhc.timer.timers.EndingCountdown;
 import net.njay.uhc.util.location.teleport.spawn.ForceRespawnUtil;
@@ -45,12 +47,22 @@ public class PlayerLeaveMatchListener implements Listener {
     }
 
     private void checkEnd(Match match){
-        if (UHC.getPlayerManager().getParticipatingPlayers(match).size() == 1) {
-           match.broadcast(ChatColor.BLUE + UHC.getPlayerManager().getParticipatingPlayers(match).iterator().next().getBukkit().getName() +
-                   ChatColor.GREEN + " has won the match! Congrats!");
-            match.getCountdownManager().start(new EndingCountdown(match), Config.Match.endTime);
-        }else if (UHC.getPlayerManager().getParticipatingPlayers(match).size() < 1){
-            match.getCountdownManager().start(new EndingCountdown(match), 1);
+        if (!(match instanceof PartyMatch)) {
+            if (UHC.getPlayerManager().getParticipatingPlayers(match).size() == 1) {
+                match.broadcast(ChatColor.BLUE + UHC.getPlayerManager().getParticipatingPlayers(match).iterator().next().getBukkit().getName() +
+                        ChatColor.GREEN + " has won the match! Congrats!");
+                match.getCountdownManager().start(new EndingCountdown(match), Config.Match.endTime);
+                match.setState(MatchState.FINISHED);
+            } else if (UHC.getPlayerManager().getParticipatingPlayers(match).size() < 1) {
+                match.getCountdownManager().start(new EndingCountdown(match), 1);
+            }
+        }else{
+            PartyMatch partyMatch = (PartyMatch) match;
+            if (partyMatch.getAliveParties().size() <= 1){
+                match.getCountdownManager().start(new EndingCountdown(match), Config.Match.endTime);
+                match.setState(MatchState.FINISHED);
+                match.broadcast("Party " + partyMatch.getAliveParties().get(0).getName() + " has won the match! Congrats!");
+            }
         }
     }
 

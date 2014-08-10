@@ -82,7 +82,7 @@ public class PartyCommand {
         //TODO: SEND MESSAGE TO ALL
     }
 
-    @Command(aliases = { "leave", "l" }, desc = "Creates a new party", usage = "<name>", min = 1, max = 1)
+    @Command(aliases = { "leave", "l" }, desc = "Creates a new party", usage = "<name>", min = -1, max = -1)
     public static void leave(CommandContext args, CommandSender sender) throws CommandException {
         if (!(sender instanceof Player)) return;
         UHCPlayer player = UHC.getPlayerManager().getPlayer((Player) sender);
