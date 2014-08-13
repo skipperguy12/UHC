@@ -3,6 +3,7 @@ package net.njay.uhc.listeners.match;
 import com.sk89q.minecraft.util.commands.ChatColor;
 import net.njay.uhc.Config;
 import net.njay.uhc.UHC;
+import net.njay.uhc.event.match.player.PlayerEliminateEvent;
 import net.njay.uhc.event.match.player.PlayerLeaveMatchEvent;
 import net.njay.uhc.match.Match;
 import net.njay.uhc.match.MatchState;
@@ -28,6 +29,7 @@ public class PlayerLeaveMatchListener implements Listener {
         player.getMatch().addSpectator(player);
         broadcastRemaining(player.getMatch());
         checkEnd(player.getMatch());
+        new PlayerEliminateEvent(player.getMatch(), player).call();
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
